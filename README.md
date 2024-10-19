@@ -28,3 +28,19 @@ CSV Viewer is a Firefox extension that enhances the browsing experience for CSV 
 4. In table view, click on column headers to sort the data.
 5. Use the search box to filter the data in real-time.
 6. Click the "Copy to Clipboard" button to copy the raw CSV data.
+
+### Building the Extension
+
+To build the extension and create an XPI file:
+
+1. Open Terminal (macOS/Linux).
+2. Navigate to the extension's directory:
+   ```
+   cd path/to/csv-viewer-extension
+   ```
+3. Run the following command:
+   - For macOS/Linux:
+     ```
+     zip -r -FS ../csv-viewer.xpi * -x "*.git*" -x "*.DS_Store"
+     ```
+4. The XPI file will be created in the parent directory of your project folder.
