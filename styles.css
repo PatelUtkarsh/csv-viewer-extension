@@ -1,0 +1,71 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+#copyButton, #viewToggle {
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  font-size: 14px;
+}
+
+#searchInput {
+  width: calc(100% - 22px);
+  padding: 10px;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.table-container {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  white-space: nowrap;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+  cursor: pointer;
+  position: relative;
+}
+
+th:hover {
+  background-color: #ddd;
+}
+
+.sort-arrow {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+#csvPlainText {
+  white-space: pre;
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.highlight {
+  background-color: yellow;
+}
+
+.csv-action-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
