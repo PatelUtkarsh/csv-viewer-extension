@@ -5,7 +5,8 @@
   "main": "content.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "esbuild content.js --bundle --minify --target=firefox57 --outfile=dist/bundle.js"
+    "build": "esbuild content.js --bundle --minify --target=firefox57 --outfile=dist/bundle.js",
+    "start": "esbuild content.js --bundle --minify --target=firefox57 --outfile=dist/bundle.js --watch"
   },
   "repository": {
     "type": "git",

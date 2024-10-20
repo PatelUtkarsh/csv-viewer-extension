@@ -182,18 +182,10 @@ import Papa from "papaparse";
         },
         error: function (error) {
           console.error("Error parsing CSV:", error);
-          const errorMsg = document.createElement("p");
-          errorMsg.textContent =
-            "Error parsing CSV file. Please make sure the file is a valid CSV.";
-          document.body.appendChild(errorMsg);
         },
       });
     })
     .catch((error) => {
       console.error("Error fetching CSV:", error);
-      const errorMsg = document.createElement("p");
-      errorMsg.textContent =
-        "Error loading CSV file. Please make sure the URL ends with .csv and the file is accessible.";
-      document.body.appendChild(errorMsg);
     });
 })();
