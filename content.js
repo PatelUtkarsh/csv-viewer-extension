@@ -1,12 +1,7 @@
 (function () {
-  console.log("CSV Viewer extension activated");
-
   if (!window.location.href.toLowerCase().endsWith(".csv")) {
-    console.log("URL does not end with .csv, exiting");
     return;
   }
-
-  console.log("URL ends with .csv, proceeding");
 
   let csvData = null;
   let rawCsvText = "";
@@ -18,34 +13,47 @@
     const headers = data.meta.fields;
     const rows = data.data;
 
-    let table = '<div class="table-container"><table id="csvTable">';
-    table +=
-      "<thead><tr>" +
-      headers
-        .map(
-          (header, index) =>
-            `<th data-index="${index}">${header} <span class="sort-arrow"></span></th>`
-        )
-        .join("") +
-      "</tr></thead>";
-    table +=
-      "<tbody>" +
-      rows
-        .map(
-          (row) =>
-            "<tr>" +
-            headers.map((header) => `<td>${row[header]}</td>`).join("") +
-            "</tr>"
-        )
-        .join("") +
-      "</tbody>";
-    table += "</table></div>";
+    const table = document.createElement("table");
+    table.id = "csvTable";
 
-    return table;
+    const thead = document.createElement("thead");
+    const headerRow = document.createElement("tr");
+    headers.forEach((header, index) => {
+      const th = document.createElement("th");
+      th.dataset.index = index;
+      th.textContent = header + " ";
+      const sortArrow = document.createElement("span");
+      sortArrow.className = "sort-arrow";
+      th.appendChild(sortArrow);
+      headerRow.appendChild(th);
+    });
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    const tbody = document.createElement("tbody");
+    rows.forEach((row) => {
+      const tr = document.createElement("tr");
+      headers.forEach((header) => {
+        const td = document.createElement("td");
+        td.textContent = row[header];
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+
+    const tableContainer = document.createElement("div");
+    tableContainer.className = "table-container";
+    tableContainer.appendChild(table);
+
+    return tableContainer;
   }
 
   function createPlainText(data) {
-    return '<pre id="csvPlainText">' + Papa.unparse(data) + "</pre>";
+    const pre = document.createElement("pre");
+    pre.id = "csvPlainText";
+    pre.textContent = Papa.unparse(data);
+    return pre;
   }
 
   function toggleView() {
@@ -86,21 +94,39 @@
   }
 
   function renderView() {
-    const viewToggle =
-      '<div class="csv-action-wrapper"><button id="viewToggle">Switch to ' +
-      (tableView ? "Plain Text" : "Table") +
-      ' View</button><button id="copyButton">Copy to Clipboard</button></div>';
-    const searchInput =
-      '<input type="text" id="searchInput" placeholder="Search...">';
+    document.body.textContent = "";
 
-    let content = tableView ? createTable(csvData) : createPlainText(csvData);
+    const actionWrapper = document.createElement("div");
+    actionWrapper.className = "csv-action-wrapper";
 
-    document.body.innerHTML = viewToggle + searchInput + content;
+    const viewToggleBtn = document.createElement("button");
+    viewToggleBtn.id = "viewToggle";
+    viewToggleBtn.textContent = `Switch to ${
+      tableView ? "Plain Text" : "Table"
+    } View`;
+    actionWrapper.appendChild(viewToggleBtn);
 
-    document.getElementById("viewToggle").addEventListener("click", toggleView);
-    document
-      .getElementById("copyButton")
-      .addEventListener("click", copyToClipboard);
+    const copyButton = document.createElement("button");
+    copyButton.id = "copyButton";
+    copyButton.textContent = "Copy to Clipboard";
+    actionWrapper.appendChild(copyButton);
+
+    const searchInput = document.createElement("input");
+    searchInput.type = "text";
+    searchInput.id = "searchInput";
+    searchInput.placeholder = "Search...";
+
+    document.body.appendChild(actionWrapper);
+    document.body.appendChild(searchInput);
+
+    if (tableView) {
+      document.body.appendChild(createTable(csvData));
+    } else {
+      document.body.appendChild(createPlainText(csvData));
+    }
+
+    viewToggleBtn.addEventListener("click", toggleView);
+    copyButton.addEventListener("click", copyToClipboard);
 
     if (tableView) {
       document.querySelectorAll("#csvTable th").forEach((th, index) => {
@@ -114,41 +140,37 @@
           `#csvTable th[data-index="${index}"]`
         );
         const arrow = th.querySelector(".sort-arrow");
-        if (index === sortColumn) {
-          arrow.textContent = sortAscending ? "▲" : "▼";
-        } else {
-          arrow.textContent = "";
-        }
+        arrow.textContent =
+          index === sortColumn ? (sortAscending ? "▲" : "▼") : "";
       });
     }
 
-    document
-      .getElementById("searchInput")
-      .addEventListener("input", function () {
-        const searchText = this.value.toLowerCase();
-        if (tableView) {
-          document.querySelectorAll("#csvTable tbody tr").forEach((row) => {
-            const rowText = row.textContent.toLowerCase();
-            row.style.display = rowText.includes(searchText) ? "" : "none";
-          });
-        } else {
-          const plainText = document.getElementById("csvPlainText");
-          const lines = plainText.textContent.split("\n");
-          plainText.innerHTML = lines
-            .map((line) =>
-              line.toLowerCase().includes(searchText)
-                ? `<span class="highlight">${line}</span>`
-                : line
-            )
-            .join("\n");
-        }
-      });
+    searchInput.addEventListener("input", function () {
+      const searchText = this.value.toLowerCase();
+      if (tableView) {
+        document.querySelectorAll("#csvTable tbody tr").forEach((row) => {
+          const rowText = row.textContent.toLowerCase();
+          row.style.display = rowText.includes(searchText) ? "" : "none";
+        });
+      } else {
+        const plainText = document.getElementById("csvPlainText");
+        const lines = plainText.textContent.split("\n");
+        plainText.textContent = "";
+        lines.forEach((line) => {
+          const lineElement = document.createElement("span");
+          lineElement.textContent = line + "\n";
+          if (line.toLowerCase().includes(searchText)) {
+            lineElement.className = "highlight";
+          }
+          plainText.appendChild(lineElement);
+        });
+      }
+    });
   }
 
   fetch(window.location.href)
     .then((response) => response.text())
     .then((text) => {
-      console.log("Fetched content:", text.slice(0, 200)); // Log first 200 characters
       rawCsvText = text; // Store the raw CSV text
       Papa.parse(text, {
         header: true,
@@ -158,14 +180,18 @@
         },
         error: function (error) {
           console.error("Error parsing CSV:", error);
-          document.body.innerHTML =
-            "<p>Error parsing CSV file. Please make sure the file is a valid CSV.</p>";
+          const errorMsg = document.createElement("p");
+          errorMsg.textContent =
+            "Error parsing CSV file. Please make sure the file is a valid CSV.";
+          document.body.appendChild(errorMsg);
         },
       });
     })
     .catch((error) => {
       console.error("Error fetching CSV:", error);
-      document.body.innerHTML =
-        "<p>Error loading CSV file. Please make sure the URL ends with .csv and the file is accessible.</p>";
+      const errorMsg = document.createElement("p");
+      errorMsg.textContent =
+        "Error loading CSV file. Please make sure the URL ends with .csv and the file is accessible.";
+      document.body.appendChild(errorMsg);
     });
 })();
