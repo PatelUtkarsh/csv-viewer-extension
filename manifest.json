@@ -1,13 +1,13 @@
 {
   "manifest_version": 2,
-  "name": "CSV Viewer",
+  "name": "Simple CSV Viewer",
   "version": "1.0",
   "description": "View CSV files in a table format with sorting and searching capabilities.",
   "permissions": ["activeTab"],
   "content_scripts": [
     {
       "matches": ["*://*/*/*.csv", "file:///*.csv"],
-      "js": ["papaparse.min.js", "content.js"],
+      "js": ["dist/bundle.js"],
       "css": ["styles.css"]
     }
   ]

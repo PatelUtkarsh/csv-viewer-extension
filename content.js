@@ -1,3 +1,5 @@
+import Papa from "papaparse";
+
 (function () {
   if (!window.location.href.toLowerCase().endsWith(".csv")) {
     return;

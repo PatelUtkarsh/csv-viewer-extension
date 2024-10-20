@@ -15,7 +15,7 @@ CSV Viewer is a Firefox extension that enhances the browsing experience for CSV 
 
 ## Installation
 
-1. Download the latest release from the [Releases](https://github.com/patelutkarsh/csv-viewer-extension/releases) page.
+1. Download the latest release from the [Releases](https://github.com/patelutkarsh/simple-csv-viewer/releases) page.
 2. Open Firefox and navigate to `about:addons`.
 3. Click the gear icon and select "Install Add-on From File".
 4. Choose the downloaded `.xpi` file.

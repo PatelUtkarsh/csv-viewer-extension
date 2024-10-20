@@ -1,0 +1,30 @@
+{
+  "name": "simple-csv-viewer",
+  "version": "1.0.0",
+  "description": "CSV Viewer is a Firefox extension that enhances the browsing experience for CSV (Comma-Separated Values) files. It provides a user-friendly interface to view, sort, search, and interact with CSV data directly in the browser.",
+  "main": "content.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "esbuild content.js --bundle --minify --target=firefox57 --outfile=dist/bundle.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PatelUtkarsh/simple-csv-viewer.git"
+  },
+  "keywords": [
+    "csv-viewer-firefox",
+    "firefox-addon-csv"
+  ],
+  "author": "Utkarsh Patel",
+  "license": "GPL-2.0-only",
+  "bugs": {
+    "url": "https://github.com/PatelUtkarsh/simple-csv-viewer/issues"
+  },
+  "homepage": "https://github.com/PatelUtkarsh/simple-csv-viewer#readme",
+  "dependencies": {
+    "papaparse": "^5.4.1"
+  },
+  "devDependencies": {
+    "esbuild": "^0.18.0"
+  }
+}
