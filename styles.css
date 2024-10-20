@@ -1,12 +1,51 @@
+:root {
+  --bg-color: #ffffff;
+  --text-color: #333333;
+  --border-color: #dddddd;
+  --header-bg-color: #f2f2f2;
+  --header-hover-color: #e0e0e0;
+  --alternate-row-color: #f9f9f9;
+  --button-bg-color: #f0f0f0;
+  --button-text-color: #333333;
+  --button-border-color: #cccccc;
+  --highlight-color: yellow;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: #1e1e1e;
+    --text-color: #e0e0e0;
+    --border-color: #444444;
+    --header-bg-color: #2c2c2c;
+    --header-hover-color: #3c3c3c;
+    --alternate-row-color: #262626;
+    --button-bg-color: #3c3c3c;
+    --button-text-color: #e0e0e0;
+    --button-border-color: #555555;
+    --highlight-color: #ffd700;
+  }
+}
+
 body {
   font-family: Arial, sans-serif;
   margin: 20px;
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
-#copyButton, #viewToggle {
-  margin-bottom: 10px;
+#viewToggle, #copyButton {
+  margin: 0 10px 10px;
   padding: 5px 10px;
   font-size: 14px;
+  background-color: var(--button-bg-color);
+  color: var(--button-text-color);
+  border: 1px solid var(--button-border-color);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#viewToggle:hover, #copyButton:hover {
+  background-color: var(--header-hover-color);
 }
 
 #searchInput {
@@ -14,6 +53,9 @@ body {
   padding: 10px;
   margin-bottom: 20px;
   font-size: 16px;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
 .table-container {
@@ -28,19 +70,19 @@ table {
 }
 
 th, td {
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   padding: 8px;
   text-align: left;
 }
 
 th {
-  background-color: #f2f2f2;
+  background-color: var(--header-bg-color);
   cursor: pointer;
   position: relative;
 }
 
 th:hover {
-  background-color: #ddd;
+  background-color: var(--header-hover-color);
 }
 
 .sort-arrow {
@@ -51,21 +93,20 @@ th:hover {
 }
 
 tr:nth-child(even) {
-  background-color: #f9f9f9;
+  background-color: var(--alternate-row-color);
 }
 
 #csvPlainText {
   white-space: pre;
   overflow-x: auto;
   max-width: 100%;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  padding: 10px;
+  border: 1px solid var(--border-color);
 }
 
 .highlight {
-  background-color: yellow;
-}
-
-.csv-action-wrapper {
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
+  background-color: var(--highlight-color);
+  color: var(--text-color);
 }
